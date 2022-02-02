@@ -11,53 +11,6 @@ class Node {
     }
 };
 
-class Stack {
-  public:
-    Node *top;
-    Stack() {
-      top = NULL;
-    }
-
-    void push(int data) {
-      Node *temp = new Node(data);
-
-      if(!temp) cout << "Heap Overflow" << endl;
-
-      temp->next = top;
-      top = temp;
-    }
-
-    void pop() {
-      Node *temp;
-      if(top == NULL){
-        cout << "Stack Underflow" << endl;
-        exit(1);
-      } else {
-        temp = top;
-        top = top->next;
-        temp->next = NULL;
-      }
-    }
-
-    void printStack() {
-      Node *ptr = top;
-
-      while(ptr != NULL) {
-        cout << ptr->data << " ";
-        ptr = ptr->next;
-      }
-      cout << endl;
-    }
-
-    int isEmpty() {
-      return top == NULL;
-    }
-
-    Node* topOfStack() {
-      return top;
-    }
-};
-
 void printLinkedList(Node *head) {
   while(head != NULL) {
     cout << head->data << " ";
@@ -83,21 +36,25 @@ void appendToList(Node **head, int data) {
 }
 
 Node* reverseList(Node *head) {
-  Stack *st = new Stack();
+  stack<Node *> st;
   // 1. push every node of the linked list into the stack
+  // traverse till the last element of the linked list
+  // push n -1 items in the stack
   Node *ptr = head;
   while(ptr->next != NULL) {
-    st->push(ptr->data);
+    st.push(ptr);
     ptr = ptr->next;
   }
 
+  // make the last element as head
   head = ptr;
+
   // 2. Now pop every element from the stack
   // assign the popped element as a linked list Node
-  while(!st->isEmpty()) {
-    ptr->next = st->topOfStack();
+  while(!st.empty()) {
+    ptr->next = st.top();
     ptr = ptr->next;
-    st->pop();
+    st.pop();
   }
   ptr->next = NULL;
   return head;
