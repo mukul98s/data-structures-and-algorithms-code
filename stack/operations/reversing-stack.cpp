@@ -1,23 +1,26 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-void insertAtBottom(stack<int> st, int val) {
-  if(st.size() == 0)
+void insertAtBottom(stack<int> &st, int val) {
+  if(st.empty()) {
     st.push(val);
-  else {
-    int a = st.top();
-    st.pop();
-    insertAtBottom(st, a);
+    return;
   }
+
+  int top =st.top();
+  st.pop();
+  insertAtBottom(st, val);
+  st.push(top);
 }
 
-void reverseStack(stack<int> st) {
-  if(st.size() > 0) {
-    int x = st.top();
-    st.pop();
-    reverseStack(st);
-    insertAtBottom(st, x);
-  }
+void reverseStack(stack<int> &st) {
+  if(st.empty())
+    return;
+
+  int x = st.top();
+  st.pop();
+  reverseStack(st);
+  insertAtBottom(st, x);
 }
 
 int main() {
@@ -29,6 +32,11 @@ int main() {
 
   reverseStack(st);
 
+  // print the stack
+  while(!st.empty()) {
+    cout << st.top() << " ";
+    st.pop();
+  }
 
   return 0;
 }
